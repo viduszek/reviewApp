@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block title %}Strona Główna{% endblock %}
+
+{% block content %}
+<br>
+<h1>Mój profil</h1>
+<br>
+
+<p>
+  <button class="btn btn-outline-success" type="button" data-toggle="collapse" data-target="#addMovie" aria-expanded="false" aria-controls="collapseExample">
+    Dodaj nową recenzję
+  </button>
+  <button class="btn btn-outline-success" type="button" data-toggle="collapse" data-target="#addNew" aria-expanded="false" aria-controls="collapseExample">
+    Dodaj do obejrzenia
+  </button>
+  <button class="btn btn-outline-warning" type="button" data-toggle="collapse" data-target="#stats" aria-expanded="false" aria-controls="collapseExample">
+    Statystyki
+  </button>
+  <button class="btn btn-outline-danger" type="button" data-toggle="collapse" data-target="#top" aria-expanded="false" aria-controls="collapseExample">
+    Najwyżej ocenione
+  </button>
+</p>
+
+<p>
+  <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#laastSeen" aria-expanded="false" aria-controls="collapseExample">
+    Pokaż ostatnie recenzje
+  </button>
+  <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#tooWatch" aria-expanded="false" aria-controls="collapseExample">
+    Pokaż listę do obejrzenia
+  </button>
+</p>
+<div class="collapse" id="stats">
+    <div class="card card-body">
+        Obejrzano w sumie {{ user.mvs|length }} filmów. <br>
+        Na Twojej liście do obejrzenia pozostało {{ user.wmvs|length }} filmów.
+    </div>
+</div>
+<br>
+<div class="collapse" id="addMovie">
+  <div class="card card-body">
+    <form method="POST">
+    <div class="form-group"><br>
+        <label for="title">Dodaj nową recenzję:</label>
+        <input type="text" class="form-control" name="title" id="title" placeholder="Tytuł">
+        <label for="picture"></label>
+        <input type="text" class="form-control" name="picture" id="picture" placeholder="Obrazek (link)">
+        <br>
+        <label for="quantity">Ocena tytułu</label>
+        <input type="number" id="rating" name="rating" min="1" max="10">
+    </div>
+    <textarea name="description" id="description" class="form-control" placeholder="Treść recenzji"></textarea>
+    <br>
+    <div align="center">
+        <button type="submit" class="btn btn-success" id="lastSeen" name="lastSeen">Dodaj recenzję</button>
+    </div>
+    </form>
+  </div>
+</div>
+<br>
+<div class="collapse" id="top">
+<h3>Moje najwyższe recenzje</h3>
+    <div class="card card-body">
+        <ul class="list-group list-group-flush" id="movies">
+        {% for mv in user.mvs|reverse %}
+            {% if mv.rating == 10 %}
+            <div class="card mb-3" style="max-width: 1080px;">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="{{ mv.picture }}" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ mv.title }}</h5>
+                      <p class="card-text">{{ mv.description }} </p>
+                      <p class="card-text"><small class="heading-text">Ocena: {{ mv.rating }}/10</small> </p>
+                      <p class="card-text"><small class="text-muted">Dodano: {{ mv.date }}</small></p>
+                  </div>
+                    <button type="button" class="close" onClick="deleteMovie({{ mv.id }})">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+<br>
+<div class="collapse" id="addNew">
+  <div class="card card-body">
+    <form method="POST" id="toWatch" name="toWatch">
+    <div class="form-group"><br>
+        <label for="title">Dodaj do listy do obejrzenia:</label>
+        <input type="text" class="form-control" name="title" id="title" placeholder="Tytuł">
+        <label for="picture"></label>
+        <input type="text" class="form-control" name="picture" id="picture" placeholder="Obrazek (link)">
+    </div>
+    <div class="form-group">
+    <label for="streaming">Streaming</label>
+    <input type="text" class="form-control" name="streamings" id="streamings" placeholder="Platforma streamingowa/kino...">
+  </div>
+    <br>
+    <div align="center">
+        <button type="submit" class="btn btn-success">Dodaj element do listy do obejrzenia</button>
+    </div>
+    </form>
+  </div>
+</div>
+<br>
+<div class="collapse" id="laastSeen">
+<h3>Moje ostatnie recenzje</h3>
+    <div class="card card-body">
+        <ul class="list-group list-group-flush" id="movies">
+        {% for mv in user.mvs|reverse %}
+            <div class="card mb-3" style="max-width: 1080px;">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="{{ mv.picture }}" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ mv.title }}</h5>
+                      <p class="card-text">{{ mv.description }} </p>
+                      <p class="card-text"><small class="heading-text">Ocena: {{ mv.rating }}/10</small> </p>
+                      <p class="card-text"><small class="text-muted">Dodano: {{ mv.date }}</small></p>
+                  </div>
+                    <button type="button" class="close" onClick="deleteMovie({{ mv.id }})">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+              </div>
+            </div>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+<br>
+<div class="collapse" id="tooWatch">
+<h3>Moja lista do obejrzenia</h3>
+    <div class="card card-body">
+        <ul class="list-group list-group-flush" id="movies">
+        {% for mv in user.wmvs %}
+            <div class="card mb-3" style="max-width: 1080px;">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="{{ mv.picture }}" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ mv.title }}</h5>
+                    <p class="card-text">Obejrzj na {{ mv.streamings }}</p>
+                      <p class="card-text"><small class="text-muted">Dodano: {{ mv.date }}</small></p>
+                  </div>
+                    <button type="button" class="close" onClick="deleteToWatch({{ mv.id }})">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+              </div>
+            </div>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

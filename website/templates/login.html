@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Logowanie{% endblock %}
+
+{% block content %}
+<br>
+
+<form method="POST">
+    <h3>Formularz logowania:</h3>
+    Wprowadź swój adres mailowy lub nazwę użytkownika oraz hasło.
+    <div class="form-group">
+        <label for="email">Adres mailowy</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Wprowadź adres mailowy">
+    </div>
+    <div class="form-group">
+        <label for="nick">Nazwa użytkownika</label>
+        <input type="text" class="form-control" id="nick" name="nick" placeholder="Wprowadź nazwę użytkownika">
+    </div>
+    <div class="form-group">
+        <label for="password">Hasło</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Wprowadź hasło">
+    </div>
+
+    <button type="submit" class="btn btn-success">Zaloguj</button>
+</form>
+
+{% endblock %}
