@@ -1,5 +1,4 @@
-# projekt-zaliczeniowy-ziarkoduch
-projekt-zaliczeniowy-ziarkoduch created by GitHub Classroom
+# ReviewApp
+## Simple web application that allows users to sign in/up and add reviews of films, TV serieses etc. Users can also create their own "Watch later" list.
 
-1. Installing dependencies:
-pip3 install -r requirements.txt
+Project was created for academic purposes (Internet Engineering at the AGH UST).
